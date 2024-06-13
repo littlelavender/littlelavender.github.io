@@ -1,0 +1,31 @@
+<div id="content" class="site-content" >
+  <slot />
+</div>
+<style is:global>
+  .site-content {
+    max-width: 780px;
+    max-width: var(--site-content-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fffc;
+    background-color: var(--site-content-background-color);
+    padding: 0 10px;
+    position: relative;
+  }
+
+  .site-content:before,.site-content:after {
+    content: "";
+    display: table;
+    table-layout: fixed
+  }
+
+  .site-content:after {
+    clear: both
+  }
+
+  @media (max-width: 768px) {
+    .site-content {
+      padding:0 4%
+    }
+  }
+</style>

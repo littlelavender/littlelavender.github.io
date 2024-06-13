@@ -1,0 +1,115 @@
+---
+import { SITE_TITLE } from '../const.ts';
+---
+
+<footer class="site-footer">
+	<div class="site-info">
+		<div class="footer-logo">
+			<p></p>
+		</div>
+		<div class="footer-copyright">
+			<p>
+				<span>
+					Powered by 
+					<a target="_blank" href="https://docs.astro.build/">Astro</a>
+				</span>
+				•
+				<span>
+					Theme from
+					<i class="iconify" data-icon="fa-heart"></i>
+					<a target="_blank" href="https://github.com/LIlGG/halo-theme-sakura">Sakura</a>
+				</span>
+			</p>
+		</div>
+		<div class="footer-device">
+			<p class="footer-site-time">© 2024 {SITE_TITLE}</p>
+		</div>
+	</div>
+</footer>
+<style is:global>
+	.site-footer {
+		background-color: #fffc;
+		background-color: var(--site-content-background-color);
+		max-width: 780px;
+		max-width: var(--site-content-max-width);
+		padding: 0 10px 2%;
+		margin: auto;
+		position: relative
+	}
+
+	.site-footer:before,.site-footer:after {
+		content: "";
+		display: table;
+		table-layout: fixed
+	}
+
+	.site-footer:after {
+		clear: both
+	}
+
+	.site-footer .site-info {
+		margin: 2rem auto;
+		text-align: center;
+		font-size: .8125rem;
+		color: #b0b0b0
+	}
+
+	.site-footer .site-info a {
+		color: #b0b0b0
+	}
+
+	.site-footer .site-info a:hover {
+		color: orange;
+		color: var(--theme-color)
+	}
+
+	@media (max-width: 1024px) {
+		.site-footer {
+				padding:30px
+		}
+	}
+
+	.footer-logo p {
+		width: 2rem;
+		height: 2rem;
+		opacity: .8;
+		margin: 0 auto;
+		background-image: url(/theme-sakura/assets/images/footer/sakura.svg);
+		background-size: cover;
+		background-position: center center;
+		background-repeat: no-repeat;
+		animation: poi-deg 12s infinite linear
+	}
+
+	@keyframes poi-deg {
+		0% {
+				transform: rotate(0)
+		}
+
+		to {
+				transform: rotate(360deg)
+		}
+	}
+
+	.footer-copyright p {
+		font-family: Ubuntu,sans-serif
+	}
+
+	.footer-copyright p span .iconify {
+		font-size: inherit;
+		color: #e74c3c
+	}
+
+	.footer-copyright p span a {
+		text-decoration: none
+	}
+
+	.footer-device {
+		display: flex;
+		justify-content: center
+	}
+
+	.footer-device p {
+		margin: 0 4px 0 0
+	}
+</style>

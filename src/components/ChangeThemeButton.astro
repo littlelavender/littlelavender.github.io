@@ -1,0 +1,278 @@
+<div class="change-skin-gear theme-change-js no-select">
+  <div class="keys">
+    <span data-i18n="theme.change_button_text">切换主题 | SCHEME TOOL</span>
+  </div>
+</div>
+<button class="mobile-change-skin theme-change-js cd-is-visible">
+  <i class="iconify rotating" data-icon="fa:gear"></i>
+</button>
+<div class="skin-menu no-select">
+  <div class="row-container">
+    <ul class="menu-list">
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;white&quot;,&quot;bg_img_strategy&quot;:&quot;none&quot;,&quot;bg_icon&quot;:&quot;fa:television&quot;,&quot;bg_night&quot;:false,&quot;bg_isdefault&quot;:true}">
+        <i class="iconify" data-icon="fa:television"></i>
+      </li>
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;sakura&quot;,&quot;bg_url&quot;:&quot;/theme-sakura/assets/images/themes/sakura.png&quot;,&quot;bg_img_strategy&quot;:&quot;none&quot;,&quot;bg_icon&quot;:&quot;fluent-emoji-high-contrast:cherry-blossom&quot;,&quot;bg_night&quot;:false,&quot;bg_isdefault&quot;:false}">
+        <i class="iconify" data-icon="fluent-emoji-high-contrast:cherry-blossom"></i>
+      </li>
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;gribs&quot;,&quot;bg_url&quot;:&quot;/theme-sakura/assets/images/themes/gribs.jpg&quot;,&quot;bg_img_strategy&quot;:&quot;none&quot;,&quot;bg_icon&quot;:&quot;fa:slack&quot;,&quot;bg_night&quot;:false,&quot;bg_isdefault&quot;:false}">
+        <i class="iconify" data-icon="fa:slack"></i>
+      </li>
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;KAdots&quot;,&quot;bg_url&quot;:&quot;/theme-sakura/assets/images/themes/kyotoanimation.png&quot;,&quot;bg_img_strategy&quot;:&quot;none&quot;,&quot;bg_icon&quot;:&quot;tabler:chart-grid-dots&quot;,&quot;bg_night&quot;:false,&quot;bg_isdefault&quot;:false}">
+        <i class="iconify" data-icon="tabler:chart-grid-dots"></i>
+      </li>
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;totem&quot;,&quot;bg_url&quot;:&quot;/theme-sakura/assets/images/themes/little-monster.png&quot;,&quot;bg_img_strategy&quot;:&quot;none&quot;,&quot;bg_icon&quot;:&quot;fa:optin-monster&quot;,&quot;bg_night&quot;:false,&quot;bg_isdefault&quot;:false}">
+        <i class="iconify" data-icon="fa:optin-monster"></i>
+      </li>
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;pixiv&quot;,&quot;bg_url&quot;:&quot;/theme-sakura/assets/images/themes/star02.png&quot;,&quot;bg_img_strategy&quot;:&quot;none&quot;,&quot;bg_icon&quot;:&quot;simple-icons:pixiv&quot;,&quot;bg_night&quot;:false,&quot;bg_isdefault&quot;:false}">
+        <i class="iconify" data-icon="simple-icons:pixiv"></i>
+      </li>
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;bing&quot;,&quot;bg_url&quot;:&quot;https://api.1314.cool/bingimg/&quot;,&quot;bg_img_strategy&quot;:&quot;cover&quot;,&quot;bg_icon&quot;:&quot;jam:bing&quot;,&quot;bg_night&quot;:false,&quot;bg_isdefault&quot;:false}">
+        <i class="iconify" data-icon="jam:bing"></i>
+      </li>
+      <li class="menu-item" data-item="{&quot;bg_name&quot;:&quot;dark&quot;,&quot;bg_img_strategy&quot;:&quot;cover&quot;,&quot;bg_icon&quot;:&quot;fa:moon-o&quot;,&quot;bg_night&quot;:true,&quot;bg_isdefault&quot;:false}">
+        <i class="iconify" data-icon="fa:moon-o"></i>
+      </li>
+    </ul>
+  </div>
+</div>
+<style is:global>
+  .change-skin-gear {
+    position: fixed;
+    bottom: -999px;
+    right: 5px;
+    width: auto;
+    height: auto;
+    z-index: 9;
+    visibility: visible;
+    white-space: nowrap;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px 10px 0 0
+  }
+
+  .change-skin-gear svg {
+    display: inline-block
+  }
+
+  @media (max-width: 768px) {
+    .change-skin-gear {
+        display:none!important
+    }
+
+    .change-skin-gear span:before {
+        content: ""
+    }
+
+    .change-skin-gear svg {
+        font-size: 20px
+    }
+  }
+
+  .rotating {
+    animation: rotating 3s linear infinite
+  }
+
+  @keyframes rotating {
+    0% {
+        transform: rotate(0)
+    }
+
+    to {
+        transform: rotate(360deg)
+    }
+  }
+
+  .mobile-change-skin {
+    display: none;
+    position: fixed;
+    bottom: 1rem;
+    right: 10px;
+    width: 3rem;
+    height: 3rem;
+    z-index: 9;
+    border: 0;
+    outline: 0;
+    opacity: 0;
+    background-color: #fff;
+    background-color: var(--widget-background-color);
+    color: orange;
+    color: var(--theme-color);
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 2px #0000001f,0 2px 2px #0000003d;
+    transition: all .3s ease
+  }
+
+  .mobile-change-skin.cd-is-visible {
+    opacity: 1
+  }
+
+  .mobile-change-skin svg {
+    display: inline-block
+  }
+
+  @media (max-width: 768px) {
+    .mobile-change-skin {
+        display:block
+    }
+  }
+
+  .skin-menu {
+    position: fixed;
+    bottom: 3rem;
+    right: 2rem;
+    height: auto;
+    width: 14rem;
+    border-radius: 5px;
+    background-color: #fff;
+    background-color: var(--widget-background-color);
+    box-shadow: 0 1px 40px -8px #00000080;
+    z-index: 9;
+    font-family: Ubuntu,sans-serif;
+    transform: scaleX(0);
+    transition: .5s
+  }
+
+  .skin-menu.show {
+    transform: scaleX(1)
+  }
+
+  .skin-menu:after {
+    content: "";
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    margin-left: -.375rem;
+    border-width: .5rem;
+    border-style: solid;
+    border-color: #fff transparent transparent;
+    border-top-color: #fff;
+    border-top-color: var(--widget-background-color)
+  }
+
+  .skin-menu .row-container {
+    height: auto;
+    margin: 0;
+    padding: 0;
+    text-align: center
+  }
+
+  .skin-menu .row-container.font-family-controls {
+    padding: 3px 12px 16px
+  }
+
+  .skin-menu .row-container .menu-list {
+    display: block;
+    text-align: center;
+    padding: 0;
+    margin: 10px auto
+  }
+
+  .skin-menu .menu-list li {
+    display: inline-block;
+    margin: 6px;
+    line-height: 2.25rem;
+    width: 2.25rem;
+    background-color: #fff;
+    background-color: var( --theme-item-background-color);
+    border-radius: 50%;
+    cursor: pointer
+  }
+
+  .skin-menu .menu-list li:hover {
+    background-color: orange;
+    background-color: var(--theme-color);
+    color: orange;
+    color: var(--theme-color)
+  }
+
+  .skin-menu .menu-list li:hover svg {
+    color: #fff
+  }
+
+  @media (max-width: 768px) {
+    .skin-menu {
+        bottom:1rem;
+        right: 70px;
+        transform: scaleY(0)
+    }
+
+    .skin-menu.show {
+        transform: scaleY(1)
+    }
+
+    .skin-menu:after {
+        display: none
+    }
+  }
+</style>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll(".theme-change-js").forEach((element) => {
+      element.addEventListener("click", () => {
+        document.querySelector(".skin-menu").classList.toggle("show");
+      });
+    });
+
+    function registerThemeRevert(themeData) {
+      if (!themeData) {
+        const localThemeData = localStorage.getItem("sakuraTheme");
+        if (!localThemeData) {
+          return;
+        }
+        themeData = JSON.parse(localThemeData);
+      }
+      const bodyElement = document.querySelector("body");
+      if (themeData.bg_url) {
+        bodyElement.style.backgroundImage = `url(${themeData.bg_url})`;
+      } else {
+        bodyElement.style.backgroundImage = "";
+      }
+      if (themeData.bg_night) {
+        bodyElement.classList.add("dark");
+      } else {
+        bodyElement.classList.remove("dark");
+      }
+
+      switch (themeData.bg_img_strategy) {
+        case "cover":
+          bodyElement.style.backgroundSize = "cover";
+          break;
+        case "no-repeat":
+        case "repeat":
+          bodyElement.style.backgroundRepeat = themeData.bg_img_strategy;
+          break;
+        default:
+          bodyElement.style.backgroundSize = "auto";
+          bodyElement.style.backgroundRepeat = "auto";
+      }
+    }
+
+    const themeModelElement = document.querySelector(".skin-menu");
+    const themeItemElements = themeModelElement.querySelectorAll(".skin-menu .menu-item");
+    themeItemElements.forEach((element) => {
+      const themeData = JSON.parse(element.getAttribute("data-item") || "{}");
+      if (themeData.bg_isdefault) {
+        registerThemeRevert(themeData);
+      }
+      element.addEventListener("click", () => {
+        registerThemeRevert(themeData);
+        localStorage.setItem("sakuraTheme", JSON.stringify(themeData));
+        // 隐藏主题开关
+        themeModelElement.classList.remove("show");
+        localStorage.setItem("systemMode", "false");
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      if (themeModelElement.classList.contains("show")) {
+        themeModelElement.classList.remove("show");
+      }
+    });
+
+    // 新页面初始化主题
+    registerThemeRevert(null);
+  });
+</script>

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SinglePageHeader from '../../../components/SinglePageHeader.astro';
+import SiteContent from '../../../components/SiteContent.astro';
+import PostList from '../../../components/PostList.astro';
+import PostPagination from '../../../components/PostPagination.astro';
+import { PAGE_SIZE } from '../../../const.ts';
+import { sortPosts } from '../../../scripts/util';
+
+export async function getStaticPaths() {
+  const allPosts = await Astro.glob('../../posts/*.md');
+  const uniqueCategories = [...new Set(allPosts.map((post) => post.frontmatter.category))];
+  let sortedPosts = sortPosts(allPosts);
+
+  return uniqueCategories.map((category) => {
+    const filteredPosts = sortedPosts.filter((post) => post.frontmatter.category == category);
+    return {
+      params: { category },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { category } = Astro.params;
+const { posts } = Astro.props;
+---
+<BaseLayout>
+  <SinglePageHeader 
+    heading={`分类：${category}`}
+  />
+  <SiteContent>
+    <PostList posts={posts} />
+    <PostPagination 
+      hasNext={posts.length > PAGE_SIZE} 
+      nextUrl=`/categories/${category}/page/2`
+    />
+  </SiteContent>
+</BaseLayout>

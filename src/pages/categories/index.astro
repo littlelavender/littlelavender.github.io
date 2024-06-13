@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SinglePageHeader from '../../components/SinglePageHeader.astro'
+import SiteContent from '../../components/SiteContent.astro'
+import TagCard from '../../components/TagCard.astro'
+
+let allPosts = await Astro.glob('../posts/*.md');
+let categories = allPosts.map(post => post.frontmatter.category);
+---
+
+<BaseLayout>
+  <SinglePageHeader 
+    heading="文章分类"
+  />
+  <SiteContent>
+    <div class="categories-container">
+      <TagCard 
+       tags={categories}
+       baseUrl="/categories"
+      />
+    </div>
+  </SiteContent>
+</BaseLayout>
+<style is:global>
+  .categories-container {
+    margin: 36px 0;
+  }
+</style>
+<script>
+  import { generateColor } from "../../scripts/util";
+  
+  document.addEventListener('astro:page-load', () => {
+    const tagChips = document.querySelectorAll(".categories-container .chip");
+    tagChips.forEach((tagChip) => {
+      let color = tagChip.style.backgroundColor;
+      if (!color || color === "rgb(255, 255, 255)") {
+        color = generateColor();
+      }
+      tagChip.style.backgroundColor = color;
+    });
+  });
+</script>

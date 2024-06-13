@@ -1,0 +1,14 @@
+<div id="main" class="site-main">
+  <slot />
+</div>
+<style is:global>
+  .site-main {
+    padding: 40px 0 0
+  }
+
+  @media (max-width: 768px) {
+    .site-main {
+      padding:15px 0 0
+    }
+  }
+</style>

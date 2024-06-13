@@ -1,0 +1,39 @@
+---
+import '../styles/post-item.css';
+
+const { post } = Astro.props;
+const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
+---
+
+<article class="post post-list">
+  <div class="post-entry">
+    <div class="feature">
+      <a href={post.url}>
+        <div class="overlay">
+          <i class="iconfont icon-text"></i>
+        </div>
+        <img 
+          src={post.frontmatter.heroImage ? post.frontmatter.heroImage : defaultImage} 
+          alt=""
+          loading="lazy"
+        />
+      </a>
+    </div>
+    <h1 class="entry-title">
+      <a href={post.url}>{post.frontmatter.title}</a>
+    </h1>
+    <div class="p-time"> 
+      <i class="iconfont icon-time"></i>
+      发布于 {post.frontmatter.pubDate}
+    </div>
+    <p>{post.frontmatter.description}</p>
+    <footer class="entry-footer">
+      <div class="post-more"> 
+        <a href={post.url}>
+          <i class="iconfont icon-caidan"></i>
+        </a>
+      </div>
+    </footer>
+  </div>
+  <hr>
+</article>

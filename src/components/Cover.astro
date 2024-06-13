@@ -1,0 +1,443 @@
+---
+import { HOME_COVER_SRC, GLITCH_TEXT, SITE_DESCRIPTION } from '../const.ts';
+
+const backgroundImg = HOME_COVER_SRC ? HOME_COVER_SRC : "/theme-sakura/assets/images/default/hd.webp";
+const glitchText = GLITCH_TEXT ? GLITCH_TEXT : "Hi,Friend"
+---
+
+<div class="headertop">
+  <figure id="centerbg" class="centerbg">
+    <img
+      class="cover-bg"
+      src={backgroundImg}
+      alt=""
+    />
+    <div class="focusinfo">
+      <h1 class="center-text glitch" data-text={glitchText}>{glitchText}</h1>
+      <div class="header-info no-select info-desc">
+        <p>
+          <i class="iconify" data-icon="fa:quote-left"></i>
+          <span class="desc">{SITE_DESCRIPTION}</span>
+          <i class="iconify" data-icon="fa:quote-right"></i>
+        </p>
+      </div>
+    </div>
+  </figure>
+  <div class="home-wave">
+    <div class="wave-1"></div>
+    <div class="wave-2"></div>
+  </div>
+  <div class="headertop-down faa-float animated">
+    <i class="iconify" data-icon="fa:chevron-down"></i>
+  </div>
+</div>
+<style is:global>
+  .headertop {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    animation: header 1s
+  }
+
+  .headertop:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-attachment: fixed;
+    background: none;
+    background: var(--first-screen-filter-images)
+  }
+
+  .headertop:after {
+    content: "";
+    display: none;
+    display: var(--first-screen-after);
+    width: 150%;
+    height: 4.375rem;
+    background: #fff;
+    background: var(--background-color);
+    left: -25%;
+    bottom: -2.875rem;
+    border-radius: 100%;
+    position: absolute;
+    z-index: 1;
+    transition: background 1s
+  }
+
+  @media (max-width: 768px) {
+    .headertop:after {
+      display:block
+    }
+  }
+
+  @keyframes header {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px)
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0)
+    }
+  }
+
+  .centerbg {
+    width: 100%;
+    height: 100vh;
+    height: var(--first-screen-height);
+    margin: 0;
+    padding: 0;
+    position: relative
+  }
+
+  @media (max-width: 768px) {
+    .centerbg {
+      height:18.75rem;
+      background-attachment: scroll
+    }
+  }
+
+  .centerbg .cover-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover
+  }
+
+  .centerbg .blend-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: .3;
+    mix-blend-mode: hard-light;
+    background: none;
+    background: var(--first-screen-background-blend-overlay)
+  }
+
+  .focusinfo {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: .4s ease all
+  }
+
+  .focusinfo img {
+    width: 8.125rem;
+    height: 8.125rem;
+    padding: 2px;
+    border-radius: 100%
+  }
+
+  @media (max-width: 768px) {
+    .focusinfo {
+        display:none
+    }
+  }
+
+  .header-tou img {
+    box-shadow: inset 0 0 10px #000;
+    padding: .3125rem;
+    opacity: 1;
+    transform: rotate(0);
+    transition: all ease 1s
+  }
+
+  .header-tou img:hover {
+    transform: rotate(360deg)
+  }
+
+  .center-text {
+    margin: 0;
+    font-family: Ubuntu,sans-serif;
+    font-size: 5rem;
+    transition: background 1s
+  }
+
+  .glitch {
+    position: relative;
+    color: #fff;
+    mix-blend-mode: lighten;
+    overflow: hidden;
+    white-space: nowrap
+  }
+
+  .glitch:before,.glitch:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: rgba(0,0,0,0);
+    clip: rect(0,0,0,0)
+  }
+
+  .glitch:before {
+    left: -1px;
+    text-shadow: 1px 0 #ff3b00
+  }
+
+  .glitch:after {
+    left: 1px;
+    text-shadow: -1px 0 #00a1d6
+  }
+
+  .glitch:hover:before {
+    text-shadow: 4px 0 #ff3b00;
+    animation: glitch-loop-1 .8s infinite ease-in-out alternate-reverse
+  }
+
+  .glitch:hover:after {
+    text-shadow: -5px 0 #00a1d6;
+    animation: glitch-loop-2 .8s infinite ease-in-out alternate-reverse
+  }
+
+  .glitch+.header-info:before {
+    top: -1.875rem;
+    content: ""
+  }
+
+  @keyframes glitch-loop-1 {
+    0% {
+        clip: rect(36px,9999px,9px,0)
+    }
+
+    25% {
+        clip: rect(25px,9999px,99px,0)
+    }
+
+    50% {
+        clip: rect(50px,9999px,102px,0)
+    }
+
+    75% {
+        clip: rect(30px,9999px,92px,0)
+    }
+
+    to {
+        clip: rect(91px,9999px,98px,0)
+    }
+  }
+
+  @keyframes glitch-loop-2 {
+    0% {
+        top: -1px;
+        left: 1px;
+        clip: rect(65px,9999px,119px,0)
+    }
+
+    25% {
+        top: -6px;
+        left: 4px;
+        clip: rect(79px,9999px,19px,0)
+    }
+
+    50% {
+        top: -3px;
+        left: 2px;
+        clip: rect(68px,9999px,11px,0)
+    }
+
+    75% {
+        top: 0;
+        left: -4px;
+        clip: rect(95px,9999px,53px,0)
+    }
+
+    to {
+        top: -1px;
+        left: -1px;
+        clip: rect(31px,9999px,149px,0)
+    }
+  }
+
+  .header-info {
+    max-width: 30%;
+    position: relative;
+    margin: 0;
+    font-size: 1rem;
+    color: #eaeadf;
+    color: var(--first-screen-header-info-text-color);
+    background: rgba(0,0,0,.5);
+    background: var(--first-screen-header-info-background-color);
+    padding: 1rem;
+    letter-spacing: 0;
+    line-height: 2rem;
+    border-radius: 10px;
+    box-sizing: initial;
+    white-space: nowrap;
+    margin-top: 1.25rem
+  }
+
+  .header-info:before {
+    position: absolute;
+    left: 30%;
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent;
+    border-bottom-color: #00000080;
+    border-bottom-color: var(--first-screen-header-info-background-color)
+  }
+
+  .header-info p {
+    margin: 0;
+    font-family: Ubuntu,sans-serif;
+    font-weight: 700;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: color .4s
+  }
+
+  .header-info .desc {
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: clip;
+    word-break: keep-all;
+    display: inline
+  }
+
+  .top-social {
+    display: flex;
+    justify-content: center;
+    height: 1.625rem;
+    margin-top: 1rem;
+    list-style: none
+  }
+
+  .top-social img {
+    height: 1.75rem;
+    width: 1.75rem;
+    padding: 0;
+    background: 0 0
+  }
+
+  .top-social ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex
+  }
+
+  .top-social ul li {
+    float: left;
+    margin-right: 10px
+  }
+
+  .top-social .flipx {
+    transform: scaleX(-1);
+    filter: FlipH
+  }
+
+  .top-social .social-image {
+    height: 2rem;
+    width: 2rem;
+    position: relative
+  }
+
+  .top-social .social-image .social-image-inner {
+    width: 8rem;
+    height: 8rem;
+    padding: .625rem;
+    background: rgba(0,0,0,.4);
+    left: -3.5rem;
+    opacity: 0;
+    position: absolute;
+    border-radius: 8px;
+    transition: .7s all ease;
+    transform: translate3d(0,3rem,0)
+  }
+
+  .top-social .social-image .social-image-inner:before {
+    content: "";
+    position: absolute;
+    top: -2rem;
+    left: 50%;
+    margin-left: -1rem;
+    border-width: 1rem;
+    border-style: solid;
+    border-color: transparent transparent rgba(0,0,0,.4) transparent
+  }
+
+  .top-social .social-image .social-image-inner img {
+    border-radius: 0;
+    width: 8rem;
+    height: 8rem;
+    padding: 0;
+    background: 0 0
+  }
+
+  .top-social .social-image:hover .social-image-inner {
+    transform: translate3d(0,16px,0);
+    opacity: 1;
+    visibility: visible
+  }
+
+  .home-wave {
+    z-index: 1;
+    position: relative;
+    width: 400%;
+    transition: .4s ease all
+  }
+
+  .home-wave>div {
+    position: absolute;
+    bottom: 0;
+    width: 100%
+  }
+
+  .home-wave .wave-1 {
+    height: 65px;
+    left: -236px;
+    background: url(/theme-sakura/assets/images/wave/wave1.png) repeat-x;
+    animation: wave 100s linear 0s infinite
+  }
+
+  .home-wave .wave-2 {
+    height: 80px;
+    left: 0px;
+    background: url(/theme-sakura/assets/images/wave/wave2.png) repeat-x;
+    animation: wave 240s linear 0s infinite
+  }
+
+  @keyframes wave {
+    0% {
+        transform: translate(0)
+    }
+
+    to {
+        transform: translate(-50.5%)
+    }
+  }
+
+  .headertop-down {
+    position: absolute;
+    bottom: 3.125rem;
+    left: 50%;
+    cursor: pointer;
+    z-index: 3
+  }
+
+  .headertop-down .iconify {
+    font-size: 1.75rem;
+    color: #fff;
+    transform: scaleX(1.5) translate(-33.34%)
+  }
+
+  @media (max-width: 768px) {
+    .headertop-down {
+        display:none
+    }
+  }
+</style>

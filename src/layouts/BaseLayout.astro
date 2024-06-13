@@ -1,0 +1,38 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import ScrollBar from '../components/ScrollBar.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import GoTopButton from '../components/GoTopButton.astro';
+import ChangeThemeButton from '../components/ChangeThemeButton.astro';
+import SearchForm from '../components/SearchForm.astro';
+
+const { title, isHomePage } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+		<BaseHead title={title} />
+	</head>
+	<body class="serif">
+		<ScrollBar />
+    <Header isHomePage={isHomePage} />
+    <main class="main">
+      <slot />
+    </main>
+    <Footer />
+		<GoTopButton />
+		<ChangeThemeButton />
+    <SearchForm />
+    <script is:inline>
+      function imgError(dom) {
+        dom.src = "/theme-sakura/assets/images/default/temp.webp"
+        dom.onerror = null;
+      }
+    </script>
+    <script>
+      import "../scripts/event.js";
+    </script>
+  </body>
+</html>

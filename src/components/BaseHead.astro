@@ -1,0 +1,53 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/normalize.css';
+import '../styles/global.css';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../const.ts';
+
+const { title } = Astro.props;
+let siteTitle = `${SITE_TITLE} | ${SITE_DESCRIPTION}`;
+if (title) {
+  siteTitle = `${title} | ${SITE_TITLE}`;
+}
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<link rel="icon" href="/favicon.ico" />
+<title> {siteTitle} </title>
+<meta name="title" content={SITE_TITLE} />
+<meta name="description" content={SITE_DESCRIPTION} />
+<!-- Noto+Serif字体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC|&amp;display=swap&amp;subset=chinese-simplified,chinese-traditional,latin" media="all" onload="this.media='all'">
+<!-- iconify图标 -->
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<!-- font-awesome-animation图标动画效果 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome-animation@1.1.1/css/font-awesome-animation.min.css">
+<!-- iconfont图标 -->
+<link rel="stylesheet" href="https://at.alicdn.com/t/c/font_4552491_6yju1qb0yvd.css">
+<style>
+  :root {
+    --theme-color: #FE9600;
+    --loading-image: url("/theme-sakura/assets/images/load/rotating-ball-o.svg");
+    --cursor-link: url("/theme-sakura/assets/cursor/ayuda.cur"), auto;
+    --cursor-link-active: url("/theme-sakura/assets/cursor/work.cur"), alias;
+    --cursor-text: url("/theme-sakura/assets/cursor/texto.cur"), auto;
+    --cursor-normal: url("/theme-sakura/assets/cursor/normal.cur"), auto;
+    --cursor-hover: url("/theme-sakura/assets/cursor/No_Disponible.cur"), auto;
+    --cd-top-image: url("/theme-sakura/assets/images/scroll.png") no-repeat center;
+    --first-screen-filter-images: url("/theme-sakura/assets/images/themes/grid.png");
+    --yya-header-top: 0;
+  }
+
+  .video-container {
+    --video-play-image: url("/theme-sakura/assets/images/video/play@32x32.png");
+    --video-pause-image: url("/theme-sakura/assets/images/video/pause@32x32.png");
+  }
+
+  .search-form {
+    --search-form-background: url("/theme-sakura/assets/images/search/iloli.gif");
+  }
+</style>
+<ViewTransitions />

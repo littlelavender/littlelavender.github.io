@@ -1,0 +1,44 @@
+---
+import PostItem from '../../../../components/PostItem.astro';
+import PostPagination from '../../../../components/PostPagination.astro';
+import { PAGE_SIZE } from '../../../../const.ts';
+import { sortPosts } from '../../../../scripts/util';
+
+export const partial = true;
+export async function getStaticPaths() {
+  const allPosts = await Astro.glob("../../../posts/*.md");
+  const uniqueCategories = [...new Set(allPosts.map((post) => post.frontmatter.category))];
+  let sortedPosts = sortPosts(allPosts);
+  
+  return uniqueCategories.map((category) => {
+    const filteredPosts = sortedPosts.filter((post) => post.frontmatter.category == category);
+    const total = filteredPosts.length;
+    const totalPage = total % PAGE_SIZE == 0 ? (total / PAGE_SIZE) : (total / PAGE_SIZE + 1);
+    
+    let paths = [];
+    for (let i = 2; i <= totalPage; i++) {
+      paths.push({ 
+        params: { category, page: i }, 
+        props: {
+          total: total,
+          posts: filteredPosts.slice(PAGE_SIZE * (i - 1), PAGE_SIZE * i),
+        } 
+      });
+    }
+    return paths;
+  }).flat();
+}
+
+const { category, page } = Astro.params;
+const { total, posts } = Astro.props;
+const hasNext = ((PAGE_SIZE * (page - 1)) + posts.length) < total;
+---
+
+{posts.map((post) => 
+  <PostItem post={post} />
+)}
+<PostPagination 
+  hasNext={hasNext}
+  nextUrl={`/categories/${category}/page/${page + 1}`}
+/>
+

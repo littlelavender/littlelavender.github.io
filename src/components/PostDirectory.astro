@@ -1,0 +1,169 @@
+---
+const { headings } = Astro.props;
+
+let topHeadings = [];
+for (let heading of headings) {
+  let newHeading = {
+    ...heading,
+    parent: null,
+    child: [],
+  };
+  if (topHeadings.length == 0) {
+    topHeadings.push(newHeading);
+    continue;
+  }
+  let parents = [topHeadings[topHeadings.length - 1]]
+  while (true) {
+    let parent = parents[parents.length - 1];
+    if (parent.child.length > 0) {
+      parents.push(parent.child[parent.child.length - 1]);
+    } else {
+      break;
+    }
+  }
+  for (let i = parents.length - 1; i >= 0; i--) {
+    let parent = parents[i];
+    if (parent.depth < newHeading.depth) {
+      parent.child.push(newHeading);
+      newHeading.parent = parent
+      break;
+    }
+    if (i == 0) {
+      topHeadings.push(newHeading);
+    }
+  }
+}
+---
+
+<aside class="sidebar">
+  <div class="toc-container">
+    <div class="toc">
+      <ol class="toc-list ">
+        {topHeadings.map(h1 =>       
+          <li class="toc-list-item">
+            <a href={`#${h1.slug}`} class="toc-link node-name--H2 ">{h1.text}</a>
+            {h1.child.length > 0 &&
+              <ol class="toc-list is-collapsible is-collapsed">
+                {h1.child.map(h2 => 
+                  <li class="toc-list-item">
+                    <a href={`#${h2.slug}`} class="toc-link node-name--H2 ">{h2.text}</a>
+                    {h2.child.length > 0 &&
+                      <ol class="toc-list is-collapsible is-collapsed">
+                        {h2.child.map(h3 => 
+                          <li class="toc-list-item">
+                            <a href={`#${h3.slug}`} class="toc-link node-name--H2 ">{h3.text}</a>
+                            {h3.child.length > 0 &&
+                              <ol class="toc-list is-collapsible is-collapsed">
+                                {h3.child.map(h4 => 
+                                  <li class="toc-list-item">
+                                    <a href={`#${h4.slug}`} class="toc-link node-name--H2 ">{h4.text}</a>
+                                    {h4.child.length > 0 &&
+                                      <ol class="toc-list is-collapsible is-collapsed">
+                                        {h4.child.map(h5 => 
+                                          <li class="toc-list-item">
+                                            <a href={`#${h5.slug}`} class="toc-link node-name--H2 ">{h5.text}</a>
+                                          </li>
+                                        )}
+                                      </ol>
+                                    }
+                                  </li>
+                                )}
+                              </ol>
+                            }
+                          </li>
+                        )}
+                      </ol>
+                    }
+                  </li>
+                )}
+              </ol>
+            }
+          </li>
+        )}
+      </ol>
+    </div>
+  </div>
+</aside>
+<style is:global>
+  .sidebar {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: -20px;
+  }
+
+  .toc-container {
+    width: 12.5rem;
+    height: 100%;
+    background-color: #fff0;
+    transform: translate(0);
+    position: absolute;
+    padding-top: 10px;
+    padding-bottom: 10px
+  }
+
+  .toc-container .toc {
+    overflow-y: auto;
+    position: sticky;
+    top: 6.25rem;
+    max-height: 80vh;
+    transition: background 1s
+  }
+
+  .toc-container .toc>.toc-list {
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+    padding-left: 10px
+  }
+
+  .toc-container .toc>.toc-list li {
+    list-style: none
+  }
+
+  .toc-container .toc .toc-list {
+    margin: 0;
+    padding-left: 10px
+  }
+
+  .toc-container .toc a.toc-link {
+    color: #666;
+    color: var(--entry-content-list-color);
+    height: 100%
+  }
+
+  .toc-container .toc a.toc-link:before {
+    background-color: #eee;
+    content: " ";
+    display: inline-block;
+    height: inherit;
+    left: 0;
+    margin-top: -1px;
+    position: absolute;
+    width: 2px
+  }
+
+  @media (max-width: 768px) {
+    .toc-container {
+      display:none
+    }
+  }
+
+  .is-active-link {
+    font-weight: 700
+  }
+
+  .is-active-link:before {
+    background-color: orange!important;
+    background-color: var(--theme-color)!important
+  }
+
+  .is-collapsible {
+    overflow: hidden;
+    transition: all .3s ease-in-out
+  }
+
+  .is-collapsed {
+    max-height: 0
+  }
+</style>

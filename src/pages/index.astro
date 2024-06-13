@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Cover from '../components/Cover.astro'
+import SiteContent from '../components/SiteContent.astro'
+import TopFeature from '../components/TopFeature.astro'
+import PostListThumb from '../components/PostListThumb.astro'
+---
+
+<BaseLayout isHomePage>
+  <Cover />
+  <SiteContent>
+    <TopFeature />
+    <PostListThumb />
+  </SiteContent>
+</BaseLayout>

@@ -1,0 +1,280 @@
+---
+import { SITE_TITLE } from '../const.ts'
+const { url, frontmatter } = Astro.props;
+
+const siteTitle = `${frontmatter.title} | ${SITE_TITLE}`;
+const sitePath = Astro.url.origin;
+const title = frontmatter.title;
+const desc = frontmatter.description;
+const pic = frontmatter.image?.url;
+const postUrl = sitePath + url;
+const picUrl = pic ? sitePath + pic : '';
+const weiboShare = `http://service.weibo.com/share/share.php?url=${postUrl}&amp;title=${siteTitle}&amp;pic=${picUrl}&amp;appkey=`;
+const qqShare = `http://connect.qq.com/widget/shareqq/index.html?url=${postUrl}&amp;title=${siteTitle}&amp;source=${siteTitle}&amp;desc=${desc}&amp;pics=${picUrl}&amp;summary=${desc}`;
+const doubanShare = `http://shuo.douban.com/!service/share?href=${postUrl}&amp;name=${siteTitle}&amp;text=${desc}&amp;image=${picUrl}&amp;starid=0&amp;aid=0&amp;style=11`;
+const qzoneShare = `http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=${postUrl}&amp;title=${siteTitle}&amp;desc=${desc}&amp;summary=${desc}&amp;site=${siteTitle}`;
+const linkedinShare = `http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;title=${siteTitle}&amp;url=${postUrl}&amp;summary=${desc}&amp;source=${siteTitle}&amp;armin=armin`;
+---
+
+<div class="post-footer">
+  <div>
+    <p>
+      Q.E.D.
+      <i data-icon="fa:meetup" style="color: #d34836" class="iconify iconify--fa"></i>
+    </p>
+  </div>
+  <div class="post-footer-meta">
+    <div class="post-license" itemprop="license">
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+        <i data-icon="fa:creative-commons" class="iconify iconify--fa"></i>
+        <span data-i18n="post.license" i18n-options="{&quot;clone&quot;:{}}">知识共享署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0)</span>
+      </a>
+    </div>
+    <div class="post-tags">
+      <i data-icon="system-uicons:tags" style="scale: 1.3;" class="iconify iconify--system-uicons"></i>
+      {frontmatter.tags.map((tag) => 
+        <a href={`/tags/${tag}`}>{tag}</a>
+      )}
+    </div>
+    <div class="post-share">
+      <ul class="social-share share-hidden">
+        <li>
+          <a class="s-weibo" href={weiboShare} target="_blank">
+            <img src="/theme-sakura/assets/images/sns/weibo.png" alt="weibo">
+          </a>
+        </li>
+        <li>
+          <a class="s-qq" href={qqShare} target="_blank">
+            <img src="/theme-sakura/assets/images/sns/qq.png" alt="qq">
+          </a>
+        </li>
+        <li>
+          <a href="javascript:" class="s-wechat">
+            <div class="wechat-qrcode">
+              <h4 data-i18n="share.wechat.qcode_title" i18n-options="{&quot;clone&quot;:{}}">微信扫一扫：分享</h4>
+              <canvas id="qrcode" 
+                class="qrcode" 
+                title={title} 
+                data-url={postUrl} 
+                height="120" width="120"
+              ></canvas>
+              <div class="help">
+                <p data-i18n="share.wechat.help_1" i18n-options="{&quot;clone&quot;:{}}">微信里点“发现”，扫一下</p>
+                <p data-i18n="share.wechat.help_2" i18n-options="{&quot;clone&quot;:{}}">二维码便可将本文分享至朋友圈。</p>
+              </div>
+            </div>
+            <img src="/theme-sakura/assets/images/sns/wechat.png" alt="wechat">
+          </a>
+        </li>
+        <li>
+          <a class="s-douban" href={doubanShare} target="_blank">
+            <img src="/theme-sakura/assets/images/sns/douban.png" alt="douban">
+          </a>
+        </li>
+        <li>
+          <a class="s-qzone" href={qzoneShare} target="_blank">
+            <img src="/theme-sakura/assets/images/sns/qzone.png" alt="qzone">
+          </a>
+        </li>
+        <li>
+          <a class="s-linkedin" href={linkedinShare} target="_blank">
+            <img src="/theme-sakura/assets/images/sns/linkedin.png" alt="linkedin">
+          </a>
+        </li>
+      </ul>
+      <i data-icon="akar-icons:arrow-forward-thick" class="iconify show-share iconify--akar-icons"></i>
+    </div>
+  </div>
+</div>
+<style is:global>
+  .post-footer .post-footer-meta {
+    padding-top: 1.25rem;
+    padding-bottom: 1.875rem;
+    border-bottom: 1px dashed #ddd;
+    border-top: 1px dashed #ddd;
+    margin-top: 1.875rem
+  }
+
+  @media (max-width: 768px) {
+    .post-footer p {
+        font-size:.875rem
+    }
+
+    .post-footer .post-footer-meta {
+        display: none
+    }
+  }
+
+  .post-license {
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: .875rem
+  }
+
+  .post-license a {
+    color: #b0b0b0
+  }
+
+  .post-license a:hover {
+    color: #888
+  }
+
+  .post-tags {
+    float: left;
+    font-size: .8125rem;
+    color: #b0b0b0;
+    text-transform: uppercase
+  }
+
+  .post-tags a {
+    color: #b0b0b0;
+    margin-right: 5px
+  }
+
+  .post-tags a:hover {
+    color: var(--threme-color)
+  }
+
+  .post-tags svg {
+    margin-right: 5px
+  }
+
+  @media (max-width: 768px) {
+    .post-tags {
+        text-align:center;
+        float: none;
+        font-size: .75rem
+    }
+  }
+
+  .post-share {
+    float: right;
+    list-style: none;
+    margin-right: 1.25rem
+  }
+
+  .post-share:hover .show-share,.post-share:hover .share-hidden {
+    opacity: 1;
+    display: inline-block
+  }
+
+  .post-share img:hover {
+    opacity: .8
+  }
+
+  .post-share ul {
+    list-style: none;
+    opacity: 0;
+    display: none;
+    margin: 0;
+    vertical-align: middle;
+    position: relative;
+    transition: opacity .4s ease-out
+  }
+
+  .post-share ul li i {
+    font-size: 1.25rem
+  }
+
+  .post-share ul li a:hover {
+    color: orange;
+    color: var(--theme-color)
+  }
+
+  .post-share li {
+    float: left;
+    margin-right: 1.875rem
+  }
+
+  .post-share li img {
+    width: 1.125rem;
+    height: 1.125rem;
+    display: block
+  }
+
+  .post-share .social-share {
+    opacity: 0;
+    display: none
+  }
+
+  .post-share .show-share {
+    cursor: pointer;
+    opacity: .6;
+    transition: opacity .1s ease-out;
+    color: orange;
+    color: var(--theme-color)
+  }
+
+  @media (max-width: 768px) {
+    .post-share {
+        display:none
+    }
+  }
+
+  .post-share .s-wechat {
+    position: relative
+  }
+
+  .post-share .s-wechat:hover .wechat-qrcode {
+    display: block
+  }
+
+  .post-share .s-wechat .wechat-qrcode {
+    display: none;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    position: absolute;
+    top: -215px;
+    left: -95px;
+    width: 200px;
+    height: 192px;
+    color: #666;
+    color: var(--color);
+    font-size: 12px;
+    text-align: center;
+    background-color: #fff;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 10px #b0b0b0;
+    transition: all .2s
+  }
+
+  .post-share .s-wechat .wechat-qrcode:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    margin-left: -6px;
+    bottom: -13px;
+    width: 0;
+    height: 0;
+    border-width: 8px 6px 6px 6px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent
+  }
+
+  .post-share .s-wechat .wechat-qrcode h4 {
+    font-weight: 400;
+    height: 26px;
+    line-height: 26px;
+    font-size: 12px;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    color: #7d7d7d
+  }
+
+  .post-share .s-wechat .wechat-qrcode img {
+    width: auto;
+    height: auto
+  }
+
+  .post-share .s-wechat .wechat-qrcode .qrcode {
+    margin: 1px auto
+  }
+
+  .post-share .s-wechat .wechat-qrcode .help p {
+    font-weight: 400;
+    line-height: 16px;
+    padding: 0;
+    margin: 0
+  }
+</style>

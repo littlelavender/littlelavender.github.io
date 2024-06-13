@@ -1,0 +1,82 @@
+---
+const { tags, baseUrl } = Astro.props;
+
+let uniqueTags = [...new Set(tags)];
+let tagMap = new Map();
+tags.forEach(tag => {  
+  if (tagMap.has(tag)) {
+    tagMap.set(tag, tagMap.get(tag) + 1)
+  } else {
+    tagMap.set(tag, 1)
+  }
+});
+---
+
+<div class="card-container">
+  <div class="card">
+    <div class="tags-chips">
+      {uniqueTags.map(tag => 
+        <a href={`${baseUrl}/${tag}`} title={tag + ': ' + tagMap.get(tag)}>
+          <span class="chip chip-default" style="background-color: #fff;">
+            {tag}
+            <span class="tag-length">{tagMap.get(tag)}</span>
+          </span>
+        </a>
+      )}
+    </div>
+  </div>
+</div>
+<style is:global>
+  .card-container {
+    position: relative;
+    text-align: center;
+    border: 0;
+    border-radius: 10px;
+    color: #000000de;
+    background: #fff;
+    background: var(--background-color);
+    background-size: cover;
+    box-shadow: 0 -15px 35px #32325d1a, 0 5px 15px #00000012;
+    box-shadow: var(--card-container-box-shadow);
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .tags-chips {
+    margin: 1rem auto 0.5rem;
+    max-width: 850px;
+    text-align: center;
+  }
+
+  .chip {
+    margin: 0.625rem;
+    padding: 1.25rem;
+    display: inline-flex;
+    line-height: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 3px 5px #0000001f;
+    z-index: 0;
+  }
+
+  .chip:hover {
+    color: #fff;
+    background: linear-gradient(to right, #4cbf30 0%, #0f9d58 100%);
+  }
+
+  .chip.chip-default {
+    color: #34495e;
+  }
+
+  .tag-length {
+    color: #9b8b2a;
+    margin-top: 0;
+    margin-left: 5px;
+    margin-right: -2px;
+    font-size: .9rem;
+  }
+</style>

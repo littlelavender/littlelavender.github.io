@@ -1,0 +1,135 @@
+---
+const { previous, next} = Astro.props;
+const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
+---
+
+<section class="post-squares">
+  {previous && 
+    <div class="post-nepre previous"> 
+      <a href={previous.url} rel="prev">
+        <div class="background">
+          <img class="lazyload" 
+            data-src={previous.frontmatter.heroImage ? previous.frontmatter.heroImage : defaultImage}
+            src={previous.frontmatter.heroImage ? previous.frontmatter.heroImage : defaultImage}
+            onerror="imgError(this)" 
+          />
+        </div>
+        <span class="label">Previous Post</span>
+        <div class="info">
+          <h3>{previous.frontmatter.title}</h3>
+        </div>
+      </a>
+    </div>
+  }
+  {next &&
+    <div class="post-nepre next"> 
+      <a href={next.url} rel="next">
+        <div class="background">
+          <img class="lazyload" 
+            data-src={next.frontmatter.heroImage ? next.frontmatter.heroImage : defaultImage}
+            src={next.frontmatter.heroImage ? next.frontmatter.heroImage : defaultImage}
+            onerror="imgError(this)" 
+          />
+        </div>
+        <span class="label">Next Post</span>
+        <div class="info">
+          <h3>{next.frontmatter.title}</h3>
+        </div>
+      </a>
+    </div>
+  }
+</section>
+<style is:global>
+  .post-squares {
+    overflow: hidden;
+    width: 100%;
+    margin: 3rem 0;
+    background: #000;
+    display: flex;
+  }
+
+  .post-squares .post-nepre {
+    flex: 1;
+    position: relative;
+    height: 10rem;
+  }
+
+  .post-squares .post-nepre a {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .post-squares .post-nepre a .background {
+    position: absolute;
+    z-index: 50;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    -webkit-transition: opacity .15s ease-out;
+    -moz-transition: opacity .15s ease-out;
+    opacity: .4;
+    transition: opacity .15s ease-out;
+  }
+  
+  .post-squares .post-nepre a:hover .background {
+    opacity: .6;
+  }
+
+  .post-squares .post-nepre img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+
+  .post-squares .post-nepre .label {
+    position: absolute;
+    z-index: 99;
+    font-size: .875rem;
+    top: 2.5rem;
+    display: block;
+    text-transform: uppercase;
+    color: #ffffffb3;
+  }
+
+  .post-squares .post-nepre .info {
+    position: absolute;
+    z-index: 98;
+    font-size: .875rem;
+    bottom: 2.5em;
+  }
+
+  .post-squares .post-nepre .info h3 {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 2rem;
+    margin: 2em 0;
+    color: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .post-squares .post-nepre.previous .label,
+  .post-squares .post-nepre.previous .info {
+    left: 2.5rem;
+  }
+
+  .post-squares .post-nepre.next .label,
+  .post-squares .post-nepre.next .info {
+    right: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .post-squares {
+      flex-direction: column;
+    }
+
+    .post-squares .post-nepre {
+      flex: auto;
+    }
+  }
+</style>

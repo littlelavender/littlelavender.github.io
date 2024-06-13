@@ -1,0 +1,44 @@
+---
+import PostItem from '../../../../components/PostItem.astro';
+import { PAGE_SIZE } from '../../../../const.ts';
+import { sortPosts } from '../../../../scripts/util';
+
+export const partial = true;
+export async function getStaticPaths() {
+  const allPosts = await Astro.glob("../../../posts/*.md");
+  const uniqueTags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
+  const sortedPosts = sortPosts(allPosts);
+  
+  return uniqueTags.map((tag) => {
+    const filteredPosts = sortedPosts.filter((post) => post.frontmatter.tags.includes(tag));
+    const total = filteredPosts.length;
+    const totalPage = total % PAGE_SIZE == 0 ? (total / PAGE_SIZE) : (total / PAGE_SIZE + 1);
+    
+    let paths = [];
+    for (let i = 2; i <= totalPage; i++) {
+      paths.push({ 
+        params: { tag, page: i }, 
+        props: {
+          total: total,
+          posts: filteredPosts.slice(PAGE_SIZE * (i - 1), PAGE_SIZE * i),
+        } 
+      });
+    }
+    return paths;
+  }).flat();
+}
+
+const { tag, page } = Astro.params;
+const { total, posts } = Astro.props;
+const hasNext = ((PAGE_SIZE * (page - 1)) + posts.length) < total;
+---
+
+{posts.map((post) => 
+  <PostItem post={post} />
+)}
+<div id="pagination" class="list-pagination">
+  {hasNext ?
+    <a href={`/tags/${tag}/page/${page + 1}`}>下一页</a> :
+    <span data-i18n="page.theend" i18n-options="{&quot;clone&quot;:{}}">没有更多文章了</span>
+  }
+</div>

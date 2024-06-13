@@ -1,0 +1,45 @@
+---
+const { hasNext, nextUrl } = Astro.props;
+---
+
+<div id="pagination" class="list-pagination">
+  {hasNext ?
+    <a href={nextUrl}>下一页</a> :
+    <span data-i18n="page.theend" i18n-options="{&quot;clone&quot;:{}}">没有更多文章了</span>
+  }
+</div>
+<style is:global>
+  .list-pagination {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    margin: 5rem 0
+  }
+
+  .list-pagination a {
+    padding: .6rem 2.5rem;
+    border: 1px solid #ccc;
+    border-radius: 3rem;
+    color: #b0b0b0;
+    display: inline-block
+  }
+
+  .list-pagination a:hover {
+    border: 1px solid orange;
+    border: 1px solid var(--theme-color);
+    color: orange;
+    color: var(--theme-color);
+    box-shadow: 0 0 4px orange;
+    box-shadow: 0 0 4px var(--theme-color)
+  }
+
+  .list-pagination a.loading {
+    border: none;
+    box-shadow: none
+  }
+
+  .list-pagination span {
+    color: #999;
+    font-size: 1rem
+  }
+</style>

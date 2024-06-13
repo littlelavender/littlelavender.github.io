@@ -1,0 +1,97 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PostHeader from '../components/PostHeader.astro';
+import SiteContent from '../components/SiteContent.astro';
+import PostArticle from '../components/PostArticle.astro';
+import PostContent from '../components/PostContent.astro';
+import PostNextPrev from '../components/PostNextPrev.astro';
+import PostDirectory from '../components/PostDirectory.astro';
+import PostFooter from '../components/PostFooter.astro';
+import AuthorProfile from '../components/AuthorProfile.astro';
+import { sortPosts } from '../scripts/util';
+
+const { file, url, frontmatter, headings } = Astro.props;
+const hasImage = !!frontmatter.heroImage;
+
+const allPosts = await Astro.glob("../pages/posts/*.md");
+const sortedPosts = sortPosts(allPosts);
+let cur = null;
+let previous = null;
+let next = null;
+for (let i = 0; i < sortedPosts.length; i++) {
+  cur = sortedPosts[i];
+  if (cur.file == file) {
+    if (i > 0) {
+      previous = sortedPosts[i - 1];
+    }
+    if (i < sortedPosts.length - 1) {
+      next = sortedPosts[i + 1];
+    }
+  }
+}
+---
+
+<BaseLayout title={frontmatter.title}>
+  <PostHeader frontmatter={frontmatter} />
+  <SiteContent>
+    <PostArticle>
+      {!hasImage &&
+        <span hidden data-pagefind-meta="image:"></span>
+        <span hidden data-pagefind-meta="image_alt:"></span>
+      }
+      <span hidden data-pagefind-meta="description">{frontmatter.description}</span>
+      <span hidden data-pagefind-meta="author">{frontmatter.author}</span>
+      <span hidden data-pagefind-meta="category">{frontmatter.category}</span>
+      <span hidden data-pagefind-meta="tags">{frontmatter.tags.join()}</span>
+      <span hidden data-pagefind-meta="pubDate">{frontmatter.pubDate}</span>
+      <span hidden data-pagefind-meta="updateDate">{frontmatter.updateDate}</span>
+      <PostContent>
+        <slot />
+      </PostContent>
+      <PostFooter url={url} frontmatter={frontmatter} />  
+      <AuthorProfile frontmatter={frontmatter} />  
+    </PostArticle>
+    {(previous || next) &&
+      <PostNextPrev previous={previous} next={next} />
+    }
+    <PostDirectory headings={headings} />
+  </SiteContent>
+</BaseLayout>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/default.min.css">
+<script>
+  import hljs from 'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/+esm';
+  import QRCode from 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/+esm';
+
+  document.addEventListener('astro:page-load', async () => {
+    console.log('highlightjs run');
+    document.querySelectorAll("pre").forEach(preElement => {
+      if (!preElement.classList.contains("highlight-wrap")) {
+        const codeElement = preElement.querySelector("code");
+        if (codeElement) {
+          hljs.highlightElement(codeElement);
+
+          preElement.classList.add("highlight-wrap");
+          let languages = codeElement.className.split(' ')
+            .filter(s => s.indexOf("language-") == 0)
+            .map(s => s.replace("language-", ""))
+            .map(s => s.toUpperCase());
+          let language = languages.length > 0 ? languages[0] : "";
+          codeElement.setAttribute("data-rel", language);
+        }
+      }
+    });
+
+    const shareWechatElement = document.getElementById("qrcode");
+    if (shareWechatElement) {
+      QRCode.toCanvas(shareWechatElement, shareWechatElement.getAttribute("data-url"), {
+        width: 120,
+        color: {
+          dark: "#000000",
+          light: "#ffffff",
+        },
+      });
+    }
+  });
+</script>
+
+

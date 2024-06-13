@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SinglePageHeader from '../../components/SinglePageHeader.astro';
+import SiteContent from '../../components/SiteContent.astro';
+import { sortPosts } from '../../scripts/util';
+
+let allPosts = await Astro.glob('../posts/*.md');
+let sortedPosts = sortPosts(allPosts);
+let postMap = new Map();
+let monthList = [];
+let tempList = []
+sortedPosts.forEach(post => {
+  tempList.push(post.frontmatter.pubDate.substr(0, 10))
+  let pubMonth = post.frontmatter.pubDate.substr(0, 7);
+  if (postMap.has(pubMonth)) {
+    postMap.get(pubMonth).push(post);
+  } else {
+    monthList.push(pubMonth);
+    postMap.set(pubMonth, [post]);
+  }
+});
+---
+
+<BaseLayout>
+  <SinglePageHeader
+    heading="文章归档"
+  />
+  <SiteContent>
+    <article class="archives-article">
+      <div class="archives-inner">
+        <div class="archives-content">
+          {monthList.map(month => 
+            <div class="archive-item" class:list={[{active: month === monthList[0]}]} id={`arti-${month}`}>
+              <div class="archive-title">
+                <span class="archive-time">
+                  <i data-icon="ph:read-cv-logo-bold" class="iconify iconify--ph"></i>
+                </span>
+                <h3>{ month }</h3>
+              </div>
+              <div class="archive-posts archives-0" style="overflow: hidden" data-date={month}>
+                {postMap.get(month).map(post => 
+                  <div class="archive-post-item">
+                    <span class="archive-post-circle"></span>
+                    <div class="arrow-left-ar"></div>
+                    <div class="brick">
+                      <a href={post.url}>
+                        <span class="time">
+                          <i data-icon="ic:round-access-time" class="iconify iconify--large iconify--ic"></i>
+                          { post.frontmatter.pubDate.substr(5, 9) }
+                        </span>
+                        { post.frontmatter.title }
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </article>
+  </SiteContent>
+</BaseLayout>
+<style is:global>
+  .archives {
+    
+  }
+
+  .archives-inner {
+    margin-top: 50px;
+    margin-bottom: 100px;
+    position: relative
+  }
+
+  .archives-inner .archives-content:before {
+    content: "";
+    position: absolute;
+    height: 75%;
+    border-left: 1px dashed #fff;
+    left: 17px;
+    top: 30px
+  }
+
+  .archives-inner h2 {
+    font-weight: 400;
+    color: #666;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #fff;
+    text-align: center
+  }
+
+  .archives-inner .archive-item.active .archive-posts {
+    max-height: -moz-max-content;
+    max-height: max-content;
+    transition-timing-function: cubic-bezier(.5,0,.3,1)
+  }
+
+  .archives-inner .archive-item {
+    margin-top: 35px;
+    position: relative;
+    z-index: 1
+  }
+
+  .archives-inner .archive-item .archive-title {
+    display: flex;
+    align-items: center
+  }
+
+  .archives-inner .archive-item .archive-title .archive-time svg {
+    padding: 10px;
+    border-radius: 100px;
+    background: orange;
+    background: var(--theme-color);
+    color: #fff
+  }
+
+  .archives-inner .archive-item .archive-title h3 {
+    letter-spacing: 2px;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 400;
+    color: orange;
+    color: var(--theme-color);
+    margin-left: 10px
+  }
+
+  .archives-inner .archive-item .archive-title h3:hover {
+    color: #ddd!important;
+    cursor: pointer
+  }
+
+  .archives-inner .archive-item .archive-posts {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s ease-in-out
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item {
+    position: relative
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item .archive-post-circle {
+    height: 11px;
+    width: 11px;
+    background: orange;
+    background: var(--theme-color);
+    display: inline-block;
+    position: absolute;
+    margin-top: 22px;
+    border-radius: 100px;
+    left: 12px
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item .arrow-left-ar {
+    width: 0;
+    height: 0;
+    display: block;
+    float: left;
+    margin-top: 10px;
+    border-left: 20px solid transparent;
+    border-bottom: 20px solid #f5f5f5;
+    margin-left: 26px
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item .brick {
+    margin-left: 46px
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item .brick a {
+    color: #7d7d7d;
+    padding: 20px;
+    background: #f5f5f5;
+    margin-bottom: 20px;
+    display: block;
+    letter-spacing: 0px
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item .brick em {
+    font-style: normal;
+    margin-left: 5px
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item .brick .time {
+    float: right;
+    color: #ccc
+  }
+
+  .archives-inner .archive-item .archive-posts .archive-post-item .brick .time svg {
+    margin: 3px
+  }
+
+  @media (max-width: 768px) {
+    .archives-inner {
+        margin:0 20px
+    }
+  }
+</style>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    // 归档页标题点击事件
+    const archiveTitleElements = document.querySelectorAll(".archives-article .archive-title h3");
+    archiveTitleElements.forEach((element) => {
+      element.addEventListener("click", () => {
+        const archiveElement = element.parentElement?.parentElement;
+        const posts = archiveElement?.querySelector(".archive-posts");
+        if (archiveElement?.classList.contains("active")) {
+          posts.style.maxHeight = '0';
+          archiveElement.classList.remove("active");
+        } else {
+          let height = posts?.scrollHeight;
+          archiveElement?.classList.add("active");
+          posts.style.maxHeight = height + 'px';
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,92 @@
+---
+import { AUTHOR, AVATAR, AUGHOR_SIGNATURE } from '../const.ts';
+
+const { frontmatter } = Astro.props;
+const author = frontmatter.author ? frontmatter.author : AUTHOR;
+const avatar = frontmatter.avatar ? frontmatter.avatar : AVATAR;
+const authorSignature = frontmatter.authorSignature ? frontmatter.authorSignature : AUGHOR_SIGNATURE;
+---
+
+<section class="author-profile">
+  <div class="info">
+    <a href="javascript:void(0)" class="profile gravatar">
+      <img src={avatar} alt={author} />
+    </a>
+    <div class="meta">
+      <h3>
+        <a href="javascript:void(0)">{author}</a>
+      </h3>
+    </div>
+  </div>
+  <p>
+    <i data-icon="solar:pen-line-duotone" class="iconify iconify--solar"></i>
+    <span data-i18n="user.description">{authorSignature}</span>
+  </p>
+</section>
+<style is:global>
+  .author-profile {
+    margin: 3rem 0;
+    text-align: center
+  }
+
+  .author-profile .info {
+    overflow: hidden;
+    text-align: center
+  }
+
+  .author-profile .info .profile {
+    display: inline-block
+  }
+
+  .author-profile .info .profile img {
+    width: 4.375rem;
+    height: 4.375rem;
+    padding: 3px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    -o-object-fit: cover;
+    object-fit: cover
+  }
+
+  .author-profile .info .meta {
+    display: block;
+    text-align: center
+  }
+
+  .author-profile .info .meta h3 {
+    margin: .625rem 0 0;
+    text-transform: none
+  }
+
+  .author-profile .info .meta h3 a {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1px;
+    color: #b0b0b0
+  }
+
+  .author-profile p {
+    font-size: .815rem;
+    margin: 1rem 0 0;
+    color: #7d8588;
+    letter-spacing: 0;
+    display: inline-block;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee
+  }
+
+  .author-profile p .iconify {
+    color: orange;
+    color: var(--theme-color);
+    margin-right: .625rem
+  }
+
+  @media (max-width: 768px) {
+    .author-profile {
+      display:none
+    }
+  }
+</style>

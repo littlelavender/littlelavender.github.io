@@ -1,0 +1,272 @@
+---
+const { post, thumbRight } = Astro.props;
+const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
+---
+
+<article class="post post-list-thumb" class:list={[{ 'post-list-thumb-right': thumbRight }]}>
+  <div class="post-content-wrap">
+    <div class="post-date">
+      <i class="iconify" data-icon="solar:clock-circle-linear"></i>
+      发布于 {post.frontmatter.pubDate}
+    </div>
+    <a href={post.url} class="post-title">
+      <h1>{post.frontmatter.title}</h1>
+    </a>
+    <div class="post-meta">
+      <span>
+        <i class="iconify" data-icon="solar:folder-with-files-outline"></i>
+        <a href={`/categories/${post.frontmatter.category}`}>{post.frontmatter.category}</a>
+      </span>
+    </div>
+    <div class="float-content">
+      <p>{post.frontmatter.description}</p>
+      <div class="post-bottom">
+        <a href={post.url} class="button-normal">
+          <i class="iconify" data-icon="akar-icons:more-horizontal-fill"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="post-thumb">
+    <a href={post.url}>
+      <img
+        class="lazyload"
+        src={post.frontmatter.heroImage ? post.frontmatter.heroImage : defaultImage}
+        alt=""
+        onerror="imgError(this)"
+      />
+    </a>
+  </div>
+</article>
+<style is:global>
+  .post-list-thumb {
+    display: flex;
+    width: 100%;
+    height: 18.75rem;
+    position: relative;
+    margin: 1.25rem 0;
+    border-radius: 10px;
+    background-color: #fff;
+    background-color: var(--background-color);
+    box-shadow: 0 1px 20px -6px #00000080;
+    box-shadow: var(--post-list-thumb-box-shadow);
+    opacity: 1;
+    animation: main .6s;
+    transition: box-shadow .3s ease
+  }
+
+  .post-list-thumb:hover img {
+    transform: scale(1.1)
+  }
+
+  .post-list-thumb .post-thumb {
+    min-width: 55%
+  }
+
+  .post-list-thumb .post-thumb a {
+    height: 18.75rem;
+    position: relative;
+    display: block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    border-radius: 0 10px 10px 0
+  }
+
+  .post-list-thumb .post-thumb a img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    pointer-events: none;
+    transition: all .6s
+  }
+
+  .post-list-thumb .post-content-wrap {
+    position: relative;
+    display: inline-block;
+    padding-left: 0;
+    width: 100%;
+    padding: 0 1.875rem;
+    margin-top: 1.25rem
+  }
+
+  .post-list-thumb .post-content-wrap .post-date {
+    color: #505050;
+    color: var(--post-list-thumb-meta-color);
+    font-size: .75rem;
+    transition: background 1s
+  }
+
+  .post-list-thumb .post-content-wrap .post-meta,
+  .post-list-thumb .post-content-wrap .post-meta a {
+    color: #505050;
+    color: var(--post-list-thumb-meta-color);
+    font-size: .75rem
+  }
+
+  .post-list-thumb .post-content-wrap .post-meta a:hover {
+    color: #FE9600;
+  }
+
+  .post-list-thumb .post-content-wrap .post-meta .comments-number {
+    margin: 0 .625rem
+  }
+
+  .post-list-thumb .post-content-wrap .float-content {
+    position: relative;
+    width: 100%;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 9;
+    color: #000000a8;
+    color: var(--post-list-thumb-abstract-color)
+  }
+
+  .post-list-thumb .post-content-wrap .float-content .post-text {
+    display: inline-block;
+    text-align: justify;
+    font-size: .875rem
+  }
+
+  .post-list-thumb .post-content-wrap .float-content .iconify {
+    font-size: 1.875rem;
+    color: #666;
+    color: var(--post-list-thumb-more-color);
+    margin-right: 5px
+  }
+
+  .post-list-thumb .post-content-wrap .float-content .iconify:hover {
+    color: orange;
+    color: var(--theme-color)
+  }
+
+  .post-list-thumb .post-content-wrap .float-content p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    height: 4.375rem;
+    overflow: hidden;
+    text-align: left;
+    word-break: break-word
+  }
+
+  .post-list-thumb.post-list-thumb-right {
+    flex-direction: row-reverse
+  }
+
+  .post-list-thumb.post-list-thumb-right .post-content-wrap,
+  .post-list-thumb.post-list-thumb-right .post-content-wrap .float-content p {
+    text-align: right
+  }
+
+  .post-list-thumb.post-list-thumb-right .post-thumb a {
+    border-radius: 10px 0 0 10px
+  }
+
+  .post-list-thumb .post-title {
+    color: #504e4e;
+    color: var(--post-list-thumb-title-color)
+  }
+
+  .post-list-thumb .post-title h1 {
+    font-size: 1.17em;
+    margin: 1em 0;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    word-wrap: break-word
+  }
+
+  @media (max-width: 768px) {
+    .post-list-thumb {
+      margin:0;
+      height: auto;
+      padding: 0;
+      border: 0;
+      margin-bottom: 1.25rem
+    }
+
+    .post-list-thumb,
+    .post-list-thumb.post-list-thumb-right {
+      flex-direction: column-reverse
+    }
+
+    .post-list-thumb:before {
+      content: "";
+      width: 1px;
+      height: 100px;
+      background-color: #0000;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      bottom: -6.375rem;
+      z-index: 0
+    }
+
+    .post-list-thumb .post-thumb {
+      width: 100%;
+      left: 0
+    }
+
+    .post-list-thumb .post-thumb a {
+      border-radius: 10px 10px 0 0
+    }
+
+    .post-list-thumb .post-content-wrap {
+      width: 100%;
+      left: 0;
+      text-align: left;
+      margin: 0;
+      padding: 1.25rem;
+      float: none;
+      box-shadow: none;
+      box-sizing: border-box;
+      border-top: 0
+    }
+
+    .post-list-thumb .post-content-wrap .float-content {
+      width: 100%;
+      left: 0;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      transition: color 1s
+    }
+
+    .post-list-thumb .post-content-wrap .float-content p {
+      height: auto;
+      display: block
+    }
+
+    .post-list-thumb .post-content-wrap .float-content .post-bottom {
+      display: none;
+      text-align: right
+    }
+
+    .post-list-thumb.post-list-thumb-right .post-content-wrap,
+    .post-list-thumb.post-list-thumb-right .post-content-wrap .float-content p {
+      text-align: left
+    }
+
+    .post-list-thumb.post-list-thumb-right .post-thumb a {
+      border-radius: 10px 10px 0 0
+    }
+  }
+
+  @media (max-width: 640px) {
+    .post-list-thumb .post-thumb a {
+      height:13.125rem
+    }
+
+    .post-list-thumb .post-content-wrap .float-content .post-text {
+      font-size: .8125rem;
+      margin-bottom: 1em
+    }
+  }
+</style>

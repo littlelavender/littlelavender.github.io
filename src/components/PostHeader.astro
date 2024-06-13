@@ -1,0 +1,211 @@
+---
+import { AUTHOR, AVATAR } from '../const.ts';
+
+const { frontmatter } = Astro.props;
+const hasImage = !!frontmatter.heroImage;
+const author = frontmatter.author ? frontmatter.author : AUTHOR;
+const avatar = frontmatter.avatar ? frontmatter.avatar : AVATAR;
+---
+
+<div class="post-header">
+  <div class="page-header" class:list={{'is-decorate': hasImage}}>
+    {hasImage && 
+      <div class="pattern-background">
+        <img 
+          src={frontmatter.heroImage} 
+          alt="" 
+          class="blur-up lazyloaded" 
+          onerror="imgError(this)" 
+          width="1920" 
+          height="400"
+          data-pagefind-meta="image[src], image_alt[alt]"
+        />
+      </div>
+    }
+    <div class="pattern-title">
+      <h1 data-pagefind-meta="title">{frontmatter.title}</h1>
+      <div class="post-meta">
+        <a href="/">
+          <img src={avatar} alt="">
+        </a>
+        <a href="/">{author}</a>
+        <span class="bull">·</span>
+        <time data-i18n="post.time">发布于 {frontmatter.pubDate}</time>
+        {frontmatter.updateDate &&
+          <span class="bull">·</span>
+          <time data-i18n="post.time">最后编辑于 {frontmatter.updateDate}</time>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+<style is:global>
+  .page-header {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0 3rem;
+  }
+
+  .page-header .pattern-title {
+    max-width: 780px;
+    position: relative;
+    color: #464646;
+    color: var(--body-color)
+  }
+  
+  .page-header .pattern-title h1 {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 300
+  }
+
+  .page-header .pattern-title h1:before,
+  .page-header .pattern-title h1:after {
+    color: orange;
+    color: var(--theme-color);
+    font-size: 1.5em;
+    vertical-align: sub
+  }
+
+  .page-header .pattern-title h1:before {
+    content: "{"
+  }
+
+  .page-header .pattern-title h1:after {
+    content: "}"
+  }
+
+  .page-header.is-decorate {
+    padding: 0;
+  }
+
+  .page-header.is-decorate .pattern-background {
+    position: relative;
+    width: 100%;
+    height: 400px;
+  }
+
+  .page-header.is-decorate .pattern-background:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #0000004d;
+    z-index: 1;
+  }
+
+  .page-header.is-decorate .pattern-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .page-header.is-decorate .pattern-title {
+    position: absolute;
+    text-shadow: 2px 2px 10px #000;
+    z-index: 1;
+  }
+
+  .page-header.is-decorate .pattern-title h1 {
+    font-size: 2rem;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .page-header.is-decorate .pattern-title h1:before,
+  .page-header.is-decorate .pattern-title h1:after {
+    content: "";
+  }
+
+  @media (max-width: 768px) {
+    .page-header {
+      padding: 50px 0 0;
+    }
+
+    .page-header.is-decorate {
+      padding-top: 0;
+    }
+
+    .page-header.is-decorate .pattern-background {
+      height: 17.5rem;
+      overflow: hidden;
+    }
+  }
+</style>
+<style is:global>
+  .post-header {
+    width: 100%;
+    position: relative;
+    
+  }
+
+  .post-header .page-header.is-decorate {
+    flex-wrap: wrap
+  }
+
+  .post-header .page-header.is-decorate .pattern-title {
+    width: 780px;
+    bottom: 2em;
+  }
+
+  .post-header .page-header.is-decorate .pattern-title h1 {
+    text-align: left;
+  }
+
+  .post-header .post-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: .875rem;
+    line-height: 2.25rem;
+  }
+
+  .post-header .post-meta img {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 100%;
+    margin-right: .75rem;
+    display: block;
+    -o-object-fit: cover;
+    object-fit: cover
+  }
+
+  .bull {
+    margin: 0 .3125rem
+  }
+
+  .page-header.is-decorate .post-meta {
+    justify-content: flex-start;
+  }
+
+  .page-header.is-decorate .post-meta,
+  .page-header.is-decorate .post-meta a {
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .post-header .page-header.is-decorate .pattern-title {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 4%;
+      bottom: 20px;
+    }
+
+    .post-header .page-header.is-decorate .pattern-title h1 {
+      font-size: 26px;
+    }
+
+    .post-header .post-meta {
+      flex-wrap: wrap;
+    }
+  }
+</style>

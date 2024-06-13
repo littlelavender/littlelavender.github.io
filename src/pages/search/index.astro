@@ -1,0 +1,140 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteContent from '../../components/SiteContent.astro';
+import SiteMain from '../../components/SiteMain.astro';
+import '../../styles/post-item.css';
+---
+
+<BaseLayout>
+  <SiteContent>
+    <SiteMain>
+      <div class="search-container">
+        <form class="s-search" method="get" action="/search/"> 
+          <i class="iconfont icon-search"></i>
+          <input class="text-input" type="search" name="q" placeholder="Search...">
+        </form>
+        <div class="page-header">
+          <h1 class="page-title">
+            没有找到任何东西！
+          </h1>
+        </div>
+        <!-- -->
+      </div>
+    </SiteMain>
+  </SiteContent>
+</BaseLayout>
+<style is:global>
+  .s-search {
+    position: relative;
+    margin-bottom: 50px;
+  }
+
+  .s-search i {
+    font-size: 32px;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #ddd;
+    position: absolute;
+    left: 16px;
+    top: 12px;
+  }
+
+  .s-search .text-input {
+    font-size: 1rem;
+    background: none;
+    padding: 12px 24px 12px 64px;
+    width: 100%;
+    outline: none;
+    border-radius: 50px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .page-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #9c9c9c;
+  }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 400;
+    border: 1px dashed #ddd;
+    padding: 10px 15px;
+    color: #828282;
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 768px) {
+    .search-container {
+      padding-top: 50px;
+    }
+
+    .s-search {
+      margin-top: 20px;
+    }
+  }
+</style>
+<script>
+  document.addEventListener('astro:page-load', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q");
+    console.log(`query ${query}`);
+    if (query) {
+      const pagefind = await import("/pagefind/pagefind.js");
+      const search = await pagefind.search(query);
+      const results = await Promise.all(search.results.map(r => r.data()));
+      console.log(results);
+      displayResults(query, results);
+    }
+  });
+
+  function displayResults(query, results) {
+    const contentElement = document.querySelector(".search-container");
+    const searchForm = contentElement.querySelector('.s-search');
+    const queryElement = contentElement.querySelector(".page-title");
+    let resultList = "";
+    if (results.length) {
+      for (let result of results) {
+        resultList += '<article class="post post-list">';
+        resultList += '<div class="post-entry">';
+        resultList += '<div class="feature">';
+        resultList += `<a href="/posts/${result.url}">`;
+        resultList += `<img width="150" height="150" src="${result.meta.image}" alt="${result.meta.image_alt}" loading="lazy" onerror="imgError(this)">`;
+        resultList += `</a>`;
+        resultList += `</div>`;
+        resultList += `<h1 class="entry-title">`;
+        resultList += `<a href="/posts/${result.url}">${result.meta.title}</a>`;
+        resultList += `</h1>`;
+        resultList += `<div class="p-time">`;
+        resultList += `<i class="iconfont icon-time"></i>`;
+        resultList += `发布于 ${result.meta.pubDate}`;
+        resultList += `</div>`;
+        resultList += `<p>${result.meta.description}</p>`;
+        resultList += `<footer class="entry-footer">`;
+        resultList += `<div class="post-more">`;
+        resultList += `<a href="/posts/${result.url}">`;
+        resultList += `<i class="iconfont icon-caidan"></i> `;
+        resultList += `</a>`;
+        resultList += `</div>`;
+        resultList += `</footer>`;
+        resultList += `</div>`;
+        resultList += `<hr>`;
+        resultList += `</article>`;
+      }
+      searchForm.style.display = 'none';
+      queryElement.innerHTML = `搜索结果: <span>${query}</span>`;
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(resultList, "text/html");
+      const resultElements = doc.querySelectorAll(".post");
+      resultElements.forEach((element) => {
+        contentElement.appendChild(element);
+      });
+    } else {
+      searchForm.style.display = 'block';
+      queryElement.innerHTML = '没有找到任何东西！';
+    }
+  }
+</script>

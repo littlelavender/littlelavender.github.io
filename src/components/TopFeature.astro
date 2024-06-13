@@ -1,0 +1,140 @@
+---
+import FesTitle from './FesTitle.astro';
+
+const allPages = await Astro.glob("../pages/*.md");
+const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
+---
+
+<div class="top-feature">
+  <FesTitle>
+    <i data-icon="fa:anchor" class="iconify iconify--fa"></i>
+    <span> START:DASH!!</span>
+  </FesTitle>
+  <div class="top-feature-inner">
+    {allPages.slice(0, 3).map((page) => 
+      <div class="top-feature-item">
+        <div class="feature-container">
+          <a href={page.url}>
+            <img 
+              src={page.frontmatter.heroImage ? page.frontmatter.heroImage : defaultImage} 
+              alt=""
+              onerror="imgError(this)" 
+            />
+            <div class="info">
+              <h3>{page.frontmatter.title}</h3>
+              <p>{page.frontmatter.description}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+<style is:global>
+  .top-feature {
+    width: 100%;
+    height: auto;
+    margin-top: 55px;
+    animation: main .6s
+  }
+
+  .top-feature .top-feature-inner {
+    display: flex
+  }
+
+  .top-feature .top-feature-inner .top-feature-item {
+    display: inline-block;
+    height: 160px;
+    width: 100%;
+    margin: 0 2px
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container {
+    position: relative;
+    height: 100%;
+    box-shadow: 1px 1px 3px #0000004d;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: all .35s ease-in-out
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container img {
+    height: 100%;
+    width: 100%;
+    display: block;
+    -o-object-fit: cover;
+    object-fit: cover;
+    transition: all .35s ease-in-out;
+    transform: scale(1)
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container .info {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    backface-visibility: hidden;
+    background: rgba(0,0,0,.6);
+    visibility: hidden;
+    opacity: 0;
+    transition: all .35s ease-in-out
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container .info h3 {
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 17px;
+    padding: 10px;
+    background: #000000;
+    margin: 30px 0 0;
+    text-align: center;
+    transition: all .35s ease-in-out;
+    transform: translate(-100%)
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container .info p {
+    font-style: italic;
+    font-size: 12px;
+    position: relative;
+    color: #b0b0b0;
+    padding: 20px;
+    text-align: center;
+    transition: all .35s .1s linear;
+    transform: translate(100%)
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container a:hover .img {
+    transform: scale(1.2)
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container a:hover .info {
+    visibility: visible;
+    opacity: 1
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container a:hover .info h3,
+  .top-feature .top-feature-inner .top-feature-item .feature-container a:hover .info p {
+    transform: translate(0)
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container,
+  .top-feature .top-feature-inner .top-feature-item .feature-container * {
+    box-sizing: border-box
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container a {
+    color: #333
+  }
+
+  .top-feature .top-feature-inner .top-feature-item .feature-container a:hover {
+    text-decoration: none
+  }
+
+  @media (max-width: 768px) {
+    .top-feature {
+      display:none
+    }
+  }
+</style>

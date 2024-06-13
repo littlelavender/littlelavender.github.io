@@ -1,0 +1,14 @@
+---
+import SiteMain from './SiteMain.astro';
+import PostItem from './PostItem.astro';
+import { PAGE_SIZE } from './../const.ts';
+
+const { posts } = Astro.props;
+---
+
+<SiteMain>
+  {posts.slice(0, PAGE_SIZE).map((post) => 
+    <PostItem post={post} />
+  )}
+</SiteMain>
+
