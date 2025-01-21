@@ -10,7 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.5.15",
+    "astro": "^5.1.7",
     "pagefind": "^1.1.0"
   }
 }

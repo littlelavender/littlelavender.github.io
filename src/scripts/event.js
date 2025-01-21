@@ -116,37 +116,40 @@ document.addEventListener('astro:page-load', () => {
   }
 
   // 下一页事件
-  const paginationElement = document.querySelector("#pagination");
-  if (paginationElement) {
-    const nextPageLinkElement = paginationElement.querySelector("a");
-    if (nextPageLinkElement) {
-      const url = nextPageLinkElement.href;
-      nextPageLinkElement.addEventListener('click', (event) => {
-        event.preventDefault();
-        const targetElement = event.target;
-        targetElement.classList.add("loading");
-        targetElement.textContent = "";
-        fetch(url, {
-          method: "GET",
-        })
-          .then((response) => response.text())
-          .then(text => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, "text/html");
-            const postListNewElements = doc.querySelectorAll(".post");
-            const postListElement = document.getElementById("main");
-            postListNewElements.forEach((element) => {
-              postListElement.appendChild(element);
-            });
-            const paginationNewElement = doc.querySelector("#pagination");
-            paginationElement.innerHTML = paginationNewElement.innerHTML;
+  (function registerNextPageEvent() {
+    const paginationElement = document.querySelector("#pagination");
+    if (paginationElement) {
+      const nextPageLinkElement = paginationElement.querySelector("a");
+      if (nextPageLinkElement) {
+        const url = nextPageLinkElement.href;
+        nextPageLinkElement.addEventListener('click', (event) => {
+          event.preventDefault();
+          const targetElement = event.target;
+          targetElement.classList.add("loading");
+          targetElement.textContent = "";
+          fetch(url, {
+            method: "GET",
           })
-          .catch(error => {
-            console.log(error)
-          });
-      });
+            .then((response) => response.text())
+            .then(text => {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(text, "text/html");
+              const postListNewElements = doc.querySelectorAll(".post");
+              const postListElement = document.getElementById("main");
+              postListNewElements.forEach((element) => {
+                postListElement.appendChild(element);
+              });
+              const paginationNewElement = doc.querySelector("#pagination");
+              paginationElement.innerHTML = paginationNewElement.innerHTML;
+              registerNextPageEvent();
+            })
+            .catch(error => {
+              console.log(error)
+            });
+        });
+      }
     }
-  }
+  })();
 
   // 标题目录滑动事件
   let headingTocElements = document.querySelectorAll(".toc-list-item");

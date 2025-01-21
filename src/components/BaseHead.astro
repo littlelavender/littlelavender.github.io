@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/normalize.css';
 import '../styles/global.css';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../const.ts';
@@ -50,4 +50,4 @@ if (title) {
     --search-form-background: url("/theme-sakura/assets/images/search/iloli.gif");
   }
 </style>
-<ViewTransitions />
+<ClientRouter />

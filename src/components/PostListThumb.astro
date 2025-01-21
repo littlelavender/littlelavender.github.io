@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import SiteMain from './SiteMain.astro';
 import FesTitle from './FesTitle.astro';
 import PostItemThumb from './PostItemThumb.astro';
@@ -6,7 +7,7 @@ import PostPagination from './PostPagination.astro';
 import { PAGE_SIZE } from './../const.ts';
 import { sortPosts } from '../scripts/util';
 
-const allPosts = await Astro.glob("../pages/posts/*.md");
+const allPosts = await getCollection("blogs");
 const sortedPosts = sortPosts(allPosts);
 let postCount = 1;
 ---

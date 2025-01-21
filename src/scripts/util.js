@@ -5,7 +5,7 @@
 export function sortPosts(posts) {
   let map = new Map();
   for (let post of posts) {
-    let pubTime = new Date(post.frontmatter.pubDate).getTime();
+    let pubTime = new Date(post.data.pubDate).getTime();
     if (map.has(pubTime)) {
       map.get(pubTime).push(post)
     } else {

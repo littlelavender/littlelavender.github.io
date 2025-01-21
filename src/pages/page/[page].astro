@@ -1,11 +1,12 @@
 ---
+import { getCollection } from "astro:content";
 import PostItemThumb from '../../components/PostItemThumb.astro';
+import { PAGE_SIZE } from '../../const.ts';
 import { sortPosts } from '../../scripts/util';
 
 export const partial = true;
 export async function getStaticPaths() {
-  const PAGE_SIZE = 10;
-  const allPosts = await Astro.glob("../posts/*.md");
+  const allPosts = await getCollection("blogs");
   const total = allPosts.length;
   const totalPage = total % PAGE_SIZE == 0 ? (total / PAGE_SIZE) : (total / PAGE_SIZE + 1);
   const sortedPosts = sortPosts(allPosts);
@@ -16,6 +17,7 @@ export async function getStaticPaths() {
       params: { page: i }, 
       props: {
         total: total,
+        current: i,
         posts: sortedPosts.slice(PAGE_SIZE * (i - 1), PAGE_SIZE * i),
       } 
     });
@@ -23,11 +25,9 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { page } = Astro.params;
-const { total, posts } = Astro.props;
-const PAGE_SIZE = 10;
+const { total, current, posts } = Astro.props;
 let postCount = 1;
-const hasNext = ((PAGE_SIZE * (page - 1)) + posts.length) < total;
+const hasNext = ((PAGE_SIZE * (current - 1)) + posts.length) < total;
 ---
 
 {posts.map((post) => 
@@ -35,7 +35,7 @@ const hasNext = ((PAGE_SIZE * (page - 1)) + posts.length) < total;
 )}
 <div id="pagination" class="list-pagination">
   {hasNext ?
-    <a href={`/page/${page + 1}`}>下一页</a> :
+    <a href={`/page/${current + 1}`}>下一页</a> :
     <span data-i18n="page.theend" i18n-options="{&quot;clone&quot;:{}}">没有更多文章了</span>
   }
 </div>

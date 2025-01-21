@@ -6,7 +6,7 @@ const siteTitle = `${frontmatter.title} | ${SITE_TITLE}`;
 const sitePath = Astro.url.origin;
 const title = frontmatter.title;
 const desc = frontmatter.description;
-const pic = frontmatter.image?.url;
+const pic = frontmatter.heroImage;
 const postUrl = sitePath + url;
 const picUrl = pic ? sitePath + pic : '';
 const weiboShare = `http://service.weibo.com/share/share.php?url=${postUrl}&amp;title=${siteTitle}&amp;pic=${picUrl}&amp;appkey=`;

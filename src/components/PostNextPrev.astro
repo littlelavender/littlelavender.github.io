@@ -6,34 +6,34 @@ const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
 <section class="post-squares">
   {previous && 
     <div class="post-nepre previous"> 
-      <a href={previous.url} rel="prev">
+      <a href={`/posts/${previous.id}`} rel="prev">
         <div class="background">
           <img class="lazyload" 
-            data-src={previous.frontmatter.heroImage ? previous.frontmatter.heroImage : defaultImage}
-            src={previous.frontmatter.heroImage ? previous.frontmatter.heroImage : defaultImage}
+            data-src={previous.data.heroImage ? previous.data.heroImage : defaultImage}
+            src={previous.data.heroImage ? previous.data.heroImage : defaultImage}
             onerror="imgError(this)" 
           />
         </div>
         <span class="label">Previous Post</span>
         <div class="info">
-          <h3>{previous.frontmatter.title}</h3>
+          <h3>{previous.data.title}</h3>
         </div>
       </a>
     </div>
   }
   {next &&
     <div class="post-nepre next"> 
-      <a href={next.url} rel="next">
+      <a href={`/posts/${next.id}`} rel="next">
         <div class="background">
           <img class="lazyload" 
-            data-src={next.frontmatter.heroImage ? next.frontmatter.heroImage : defaultImage}
-            src={next.frontmatter.heroImage ? next.frontmatter.heroImage : defaultImage}
+            data-src={next.data.heroImage ? next.data.heroImage : defaultImage}
+            src={next.data.heroImage ? next.data.heroImage : defaultImage}
             onerror="imgError(this)" 
           />
         </div>
         <span class="label">Next Post</span>
         <div class="info">
-          <h3>{next.frontmatter.title}</h3>
+          <h3>{next.data.title}</h3>
         </div>
       </a>
     </div>

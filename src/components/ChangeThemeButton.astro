@@ -212,7 +212,7 @@
   document.addEventListener('astro:page-load', () => {
     document.querySelectorAll(".theme-change-js").forEach((element) => {
       element.addEventListener("click", () => {
-        document.querySelector(".skin-menu").classList.toggle("show");
+        document.querySelector(".skin-menu")?.classList.toggle("show");
       });
     });
 

@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SinglePageHeader from '../../../components/SinglePageHeader.astro';
 import SiteContent from '../../../components/SiteContent.astro';
@@ -8,12 +9,12 @@ import { PAGE_SIZE } from '../../../const.ts';
 import { sortPosts } from '../../../scripts/util';
 
 export async function getStaticPaths() {
-  const allPosts = await Astro.glob('../../posts/*.md');
-  const uniqueCategories = [...new Set(allPosts.map((post) => post.frontmatter.category))];
-  let sortedPosts = sortPosts(allPosts);
+  const allPosts = await getCollection("blogs");
+  const uniqueCategories = [...new Set(allPosts.map((post) => post.data.category))];
+  const sortedPosts = sortPosts(allPosts);
 
   return uniqueCategories.map((category) => {
-    const filteredPosts = sortedPosts.filter((post) => post.frontmatter.category == category);
+    const filteredPosts = sortedPosts.filter((post) => post.data.category == category);
     return {
       params: { category },
       props: { posts: filteredPosts },

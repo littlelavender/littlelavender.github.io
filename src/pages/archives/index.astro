@@ -1,17 +1,17 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SinglePageHeader from '../../components/SinglePageHeader.astro';
 import SiteContent from '../../components/SiteContent.astro';
 import { sortPosts } from '../../scripts/util';
 
-let allPosts = await Astro.glob('../posts/*.md');
-let sortedPosts = sortPosts(allPosts);
+const allPosts = await getCollection("blogs");
+const sortedPosts = sortPosts(allPosts);
 let postMap = new Map();
 let monthList = [];
-let tempList = []
 sortedPosts.forEach(post => {
-  tempList.push(post.frontmatter.pubDate.substr(0, 10))
-  let pubMonth = post.frontmatter.pubDate.substr(0, 7);
+  console.log(post.data.pubDate)
+  const pubMonth = post.data.pubDate.substr(0, 7);
   if (postMap.has(pubMonth)) {
     postMap.get(pubMonth).push(post);
   } else {
@@ -43,12 +43,12 @@ sortedPosts.forEach(post => {
                     <span class="archive-post-circle"></span>
                     <div class="arrow-left-ar"></div>
                     <div class="brick">
-                      <a href={post.url}>
+                      <a href={`/posts/${post.id}`}>
                         <span class="time">
                           <i data-icon="ic:round-access-time" class="iconify iconify--large iconify--ic"></i>
-                          { post.frontmatter.pubDate.substr(5, 9) }
+                          { post.data.pubDate.substr(5, 9) }
                         </span>
-                        { post.frontmatter.title }
+                        { post.data.title }
                       </a>
                     </div>
                   </div>

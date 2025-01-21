@@ -1,4 +1,5 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import PostHeader from '../components/PostHeader.astro';
 import SiteContent from '../components/SiteContent.astro';
@@ -10,49 +11,50 @@ import PostFooter from '../components/PostFooter.astro';
 import AuthorProfile from '../components/AuthorProfile.astro';
 import { sortPosts } from '../scripts/util';
 
-const { file, url, frontmatter, headings } = Astro.props;
-const hasImage = !!frontmatter.heroImage;
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const hasImage = !!post.data.heroImage;
 
-const allPosts = await Astro.glob("../pages/posts/*.md");
+const allPosts = await getCollection("blogs");
 const sortedPosts = sortPosts(allPosts);
-let cur = null;
-let previous = null;
-let next = null;
+let curPost = null;
+let prevPost = null;
+let nextPost = null;
 for (let i = 0; i < sortedPosts.length; i++) {
-  cur = sortedPosts[i];
-  if (cur.file == file) {
+  curPost = sortedPosts[i];
+  if (curPost.id == post.id) {
     if (i > 0) {
-      previous = sortedPosts[i - 1];
+      prevPost = sortedPosts[i - 1];
     }
     if (i < sortedPosts.length - 1) {
-      next = sortedPosts[i + 1];
+      nextPost = sortedPosts[i + 1];
     }
   }
 }
 ---
 
-<BaseLayout title={frontmatter.title}>
-  <PostHeader frontmatter={frontmatter} />
+<BaseLayout title={post.data.title}>
+  <PostHeader frontmatter={post.data} />
   <SiteContent>
     <PostArticle>
       {!hasImage &&
         <span hidden data-pagefind-meta="image:"></span>
         <span hidden data-pagefind-meta="image_alt:"></span>
       }
-      <span hidden data-pagefind-meta="description">{frontmatter.description}</span>
-      <span hidden data-pagefind-meta="author">{frontmatter.author}</span>
-      <span hidden data-pagefind-meta="category">{frontmatter.category}</span>
-      <span hidden data-pagefind-meta="tags">{frontmatter.tags.join()}</span>
-      <span hidden data-pagefind-meta="pubDate">{frontmatter.pubDate}</span>
-      <span hidden data-pagefind-meta="updateDate">{frontmatter.updateDate}</span>
+      <span hidden data-pagefind-meta="description">{post.data.description}</span>
+      <span hidden data-pagefind-meta="author">{post.data.author}</span>
+      <span hidden data-pagefind-meta="category">{post.data.category}</span>
+      <span hidden data-pagefind-meta="tags">{post.data.tags.join()}</span>
+      <span hidden data-pagefind-meta="pubDate">{post.data.pubDate}</span>
+      <span hidden data-pagefind-meta="updateDate">{post.data.updateDate}</span>
       <PostContent>
-        <slot />
+        <Content />
       </PostContent>
-      <PostFooter url={url} frontmatter={frontmatter} />  
-      <AuthorProfile frontmatter={frontmatter} />  
+      <PostFooter url={`/posts/${post.id}`} frontmatter={post.data} />  
+      <AuthorProfile frontmatter={post.data} />  
     </PostArticle>
-    {(previous || next) &&
-      <PostNextPrev previous={previous} next={next} />
+    {(prevPost || nextPost) &&
+      <PostNextPrev previous={prevPost} next={nextPost} />
     }
     <PostDirectory headings={headings} />
   </SiteContent>

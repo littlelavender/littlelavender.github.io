@@ -1,7 +1,7 @@
 ---
 import FesTitle from './FesTitle.astro';
 
-const allPages = await Astro.glob("../pages/*.md");
+const allPages = Object.values(import.meta.glob("../pages/*.md", { eager: true }));
 const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
 ---
 
@@ -11,7 +11,7 @@ const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
     <span> START:DASH!!</span>
   </FesTitle>
   <div class="top-feature-inner">
-    {allPages.slice(0, 3).map((page) => 
+    {allPages.slice(0, 3).map((page: any) => 
       <div class="top-feature-item">
         <div class="feature-container">
           <a href={page.url}>

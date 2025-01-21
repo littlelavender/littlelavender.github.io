@@ -1,11 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import SinglePageHeader from '../../components/SinglePageHeader.astro'
 import SiteContent from '../../components/SiteContent.astro'
 import TagCard from '../../components/TagCard.astro'
 
-let allPosts = await Astro.glob('../posts/*.md');
-let categories = allPosts.map(post => post.frontmatter.category);
+const allPosts = await getCollection("blogs");
+const categories = allPosts.map(post => post.data.category);
 ---
 
 <BaseLayout>

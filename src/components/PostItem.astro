@@ -8,28 +8,28 @@ const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
 <article class="post post-list">
   <div class="post-entry">
     <div class="feature">
-      <a href={post.url}>
+      <a href={`/posts/${post.id}`}>
         <div class="overlay">
           <i class="iconfont icon-text"></i>
         </div>
         <img 
-          src={post.frontmatter.heroImage ? post.frontmatter.heroImage : defaultImage} 
+          src={post.data.heroImage ? post.data.heroImage : defaultImage} 
           alt=""
           loading="lazy"
         />
       </a>
     </div>
     <h1 class="entry-title">
-      <a href={post.url}>{post.frontmatter.title}</a>
+      <a href={`/posts/${post.id}`}>{post.data.title}</a>
     </h1>
     <div class="p-time"> 
       <i class="iconfont icon-time"></i>
-      发布于 {post.frontmatter.pubDate}
+      发布于 {post.data.pubDate}
     </div>
-    <p>{post.frontmatter.description}</p>
+    <p>{post.data.description}</p>
     <footer class="entry-footer">
       <div class="post-more"> 
-        <a href={post.url}>
+        <a href={`/posts/${post.id}`}>
           <i class="iconfont icon-caidan"></i>
         </a>
       </div>

@@ -7,31 +7,31 @@ const defaultImage = "/theme-sakura/assets/images/default/temp.webp";
   <div class="post-content-wrap">
     <div class="post-date">
       <i class="iconify" data-icon="solar:clock-circle-linear"></i>
-      发布于 {post.frontmatter.pubDate}
+      发布于 {post.data.pubDate}
     </div>
-    <a href={post.url} class="post-title">
-      <h1>{post.frontmatter.title}</h1>
+    <a href={`/posts/${post.id}`} class="post-title">
+      <h1>{post.data.title}</h1>
     </a>
     <div class="post-meta">
       <span>
         <i class="iconify" data-icon="solar:folder-with-files-outline"></i>
-        <a href={`/categories/${post.frontmatter.category}`}>{post.frontmatter.category}</a>
+        <a href={`/categories/${post.data.category}`}>{post.data.category}</a>
       </span>
     </div>
     <div class="float-content">
-      <p>{post.frontmatter.description}</p>
+      <p>{post.data.description}</p>
       <div class="post-bottom">
-        <a href={post.url} class="button-normal">
+        <a href={`/posts/${post.id}`} class="button-normal">
           <i class="iconify" data-icon="akar-icons:more-horizontal-fill"></i>
         </a>
       </div>
     </div>
   </div>
   <div class="post-thumb">
-    <a href={post.url}>
+    <a href={`/posts/${post.id}`}>
       <img
         class="lazyload"
-        src={post.frontmatter.heroImage ? post.frontmatter.heroImage : defaultImage}
+        src={post.data.heroImage ? post.data.heroImage : defaultImage}
         alt=""
         onerror="imgError(this)"
       />
